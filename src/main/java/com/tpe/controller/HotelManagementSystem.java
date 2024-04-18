@@ -1,6 +1,9 @@
 package com.tpe.controller;
 
 import com.tpe.config.HibernateUtils;
+import com.tpe.repository.HotelRepository;
+import com.tpe.service.HotelService;
+import com.tpe.service.RoomService;
 
 import java.util.Scanner;
 
@@ -9,10 +12,16 @@ public class HotelManagementSystem {
     private static Scanner scanner = new Scanner(System.in);
 
     //Ana Menü
-    public static void displayHotelManagementSystemMenu(){
+    public static void displayHotelManagementSystemMenu() {
+
+        //1 HotelRepo to be used in all application.
+        HotelRepository hotelRepository = new HotelRepository();
+        HotelService hotelService = new HotelService(hotelRepository);
+
+
         boolean exit = false;
 
-        while (!exit){
+        while (!exit) {
             System.out.println("======= Hotel Management ======");
             System.out.println("1.Hotel Operations");
             System.out.println("2.Room Operations");
@@ -24,9 +33,9 @@ public class HotelManagementSystem {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
-                    displayHotelOperationsMenu();
+                    displayHotelOperationsMenu(hotelService);
                     break;
                 case 2:
                     displayRoomOperationsMenu();
@@ -51,7 +60,9 @@ public class HotelManagementSystem {
     }
 
     //hotel operations
-    private static void displayHotelOperationsMenu() {
+    private static void displayHotelOperationsMenu(HotelService hotelService) {
+        //HotelService hotelService = new HotelService(); uygulama içerisinde açmak yerine, param const ile çağırarak
+        //her çağrılışında oluşacak kaynak israfını önleriz.
 
         System.out.println("Hotel Operation Menu");
 
@@ -72,12 +83,18 @@ public class HotelManagementSystem {
             switch (choice) {
                 case 1:
                     //1-A: Save hotel
+                    hotelService.saveHotel();
                     break;
                 case 2:
-
+                    //2-a: Finding hotel
+                    System.out.println("Enter hotel ID");
+                    Long id = scanner.nextLong();
+                    scanner.nextLine();
+                   // hotelService.findHotelById(scanner.nextLong()); da yapılabilir.
                     break;
                 case 3:
-
+                    //3a- Tüm otelleri listeleme
+                    hotelService.getAllHotels();
                     break;
                 case 4:
 
@@ -99,7 +116,6 @@ public class HotelManagementSystem {
 
     //room operations
     private static void displayRoomOperationsMenu() {
-
 
 
         System.out.println("Room Operation Menu");
