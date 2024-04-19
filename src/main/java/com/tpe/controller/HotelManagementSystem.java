@@ -14,9 +14,11 @@ public class HotelManagementSystem {
     //Ana Menü
     public static void displayHotelManagementSystemMenu() {
 
+
         //1 HotelRepo to be used in all application.
         HotelRepository hotelRepository = new HotelRepository();
         HotelService hotelService = new HotelService(hotelRepository);
+        RoomService roomService=new RoomService(hotelService,roomRepository);
 
 
         boolean exit = false;
@@ -38,7 +40,7 @@ public class HotelManagementSystem {
                     displayHotelOperationsMenu(hotelService);
                     break;
                 case 2:
-                    displayRoomOperationsMenu();
+                    displayRoomOperationsMenu(roomService);
                     break;
                 case 3:
                     displayGuestOperationsMenu();
@@ -82,7 +84,7 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-                    //1-A: Save hotel
+                    //todo:1A Save Hotel
                     hotelService.saveHotel();
                     break;
                 case 2:
@@ -90,14 +92,14 @@ public class HotelManagementSystem {
                     System.out.println("Enter hotel ID");
                     Long id = scanner.nextLong();
                     scanner.nextLine();
-                   // hotelService.findHotelById(scanner.nextLong()); da yapılabilir.
+                    // hotelService.findHotelById(scanner.nextLong()); can be done too..
                     break;
                 case 3:
-                    //3a- Tüm otelleri listeleme
-                    hotelService.getAllHotels();
+
                     break;
                 case 4:
-
+                    //3a- List all hotels
+                    hotelService.getAllHotels();
                     break;
                 case 5:
 
@@ -115,8 +117,7 @@ public class HotelManagementSystem {
     }
 
     //room operations
-    private static void displayRoomOperationsMenu() {
-
+    private static void displayRoomOperationsMenu(RoomService roomService) {
 
         System.out.println("Room Operation Menu");
         boolean exit = false;
@@ -134,21 +135,28 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
+                    //4-a : adding room
+                    roomService.saveRoom();
 
                     break;
                 case 2:
+                    //5-a:
+                    System.out.println("Enter room ID");
+                    Long roomID = scanner.nextLong();
+                    roomService.findRoomById(roomID);
 
                     break;
                 case 3:
 
                     break;
                 case 4:
+                    //6-a
+                    roomService.getAllRooms();
 
                     break;
                 case 0:
                     exit = true;
                     System.out.println("Returning to Main Menu...");
-
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
