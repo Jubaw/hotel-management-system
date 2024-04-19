@@ -2,6 +2,7 @@ package com.tpe.controller;
 
 import com.tpe.config.HibernateUtils;
 import com.tpe.repository.HotelRepository;
+import com.tpe.repository.RoomRepository;
 import com.tpe.service.HotelService;
 import com.tpe.service.RoomService;
 
@@ -14,9 +15,12 @@ public class HotelManagementSystem {
     //Ana Menü
     public static void displayHotelManagementSystemMenu() {
 
+
         //1 HotelRepo to be used in all application.
         HotelRepository hotelRepository = new HotelRepository();
         HotelService hotelService = new HotelService(hotelRepository);
+        RoomRepository roomRepository = new RoomRepository();
+        RoomService roomService=new RoomService(hotelService,roomRepository);
 
 
         boolean exit = false;
@@ -38,7 +42,7 @@ public class HotelManagementSystem {
                     displayHotelOperationsMenu(hotelService);
                     break;
                 case 2:
-                    displayRoomOperationsMenu();
+                    displayRoomOperationsMenu(roomService);
                     break;
                 case 3:
                     displayGuestOperationsMenu();
@@ -82,7 +86,7 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-                    //1-A: Save hotel
+                    //todo:1A Save Hotel
                     hotelService.saveHotel();
                     break;
                 case 2:
@@ -90,16 +94,26 @@ public class HotelManagementSystem {
                     System.out.println("Enter hotel ID");
                     Long id = scanner.nextLong();
                     scanner.nextLine();
-                   // hotelService.findHotelById(scanner.nextLong()); da yapılabilir.
+                    // hotelService.findHotelById(scanner.nextLong()); can be done too..
                     break;
                 case 3:
-                    //3a- Tüm otelleri listeleme
-                    hotelService.getAllHotels();
+                    //7-a: Delete hotel
+                    System.out.println("Enter hotel ID");
+                    Long hotelID = scanner.nextLong();
+                    scanner.nextLine();
+
+                    hotelService.deleteHotel(hotelID);
                     break;
                 case 4:
-
+                    //3a- List all hotels
+                    hotelService.getAllHotels();
                     break;
                 case 5:
+                    //8-a: update hotel
+                    System.out.println("Enter hotel ID");
+                    Long updatedHotelId = scanner.nextLong();
+                    scanner.nextLine();
+                    hotelService.updateHotelById(updatedHotelId);
 
                     break;
                 case 0:
@@ -115,8 +129,7 @@ public class HotelManagementSystem {
     }
 
     //room operations
-    private static void displayRoomOperationsMenu() {
-
+    private static void displayRoomOperationsMenu(RoomService roomService) {
 
         System.out.println("Room Operation Menu");
         boolean exit = false;
@@ -134,21 +147,29 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
+                    //4-a : adding room
+                    roomService.saveRoom();
 
                     break;
                 case 2:
+                    //5-a:
+                    System.out.println("Enter room ID");
+                    Long roomID = scanner.nextLong();
+                    roomService.findRoomById(roomID);
 
                     break;
                 case 3:
+                    //hw: delete
 
                     break;
                 case 4:
+                    //6-a
+                    roomService.getAllRooms();
 
                     break;
                 case 0:
                     exit = true;
                     System.out.println("Returning to Main Menu...");
-
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -180,12 +201,14 @@ public class HotelManagementSystem {
 
                     break;
                 case 2:
+                    //hw: find
 
                     break;
                 case 3:
 
                     break;
                 case 4:
+                    //hw: findall
 
                     break;
                 case 0:
@@ -221,12 +244,15 @@ public class HotelManagementSystem {
 
                     break;
                 case 2:
+                    //Hw: find
 
                     break;
                 case 3:
+                    //hw:
 
                     break;
                 case 4:
+                    //Hw:findall
 
                     break;
                 case 0:

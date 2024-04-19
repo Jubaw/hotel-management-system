@@ -64,4 +64,29 @@ public class HotelRepository {
         return null;
     }
 
+
+    //7-c
+    public void delete(Hotel hotel) {
+        try {
+
+
+            session = HibernateUtils.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+            //delete from t_hotel where id =
+            session.delete(hotel);
+            transaction.commit();
+            //insert
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+
+        }finally {
+            HibernateUtils.closeSession(session);
+        }
+    }
+
+
+    //8-c: update t_hotel set name=  //Todo:
+    public void updateHotel(Hotel existingHotel) {
+
+    }
 }

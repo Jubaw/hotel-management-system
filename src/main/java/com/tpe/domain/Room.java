@@ -1,9 +1,6 @@
 package com.tpe.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +13,15 @@ public class Room {
     @Column(nullable = false)
     private String number;
     @Column(nullable = false)
-    private Integer capacity; //Wrappers default are null
+    private Integer capacity; //Wrappers return null
 
 
     //todo: many-to-one
+    @ManyToOne() //Relation between room and hotel, adds FK(hotel_id) to room table
+    @JoinColumn(name = "hotel_id", nullable = false) //optional
     private Hotel hotel;
 
-    //todo: one-to-many
+    @OneToMany(mappedBy = "room",orphanRemoval = true)
     private List<Reservation> reservationList = new ArrayList<>();
 
     public Room() {
