@@ -55,7 +55,7 @@ public class RoomService {
             roomRepository.save(room);//adding to the table
 
             System.out.println("Room is saved successfully. Room ID: " + room.getId());
-        }else {
+        } else {
             System.out.println("Room is not saved.");
         }
     }
@@ -68,7 +68,8 @@ public class RoomService {
 
         for (Room room : roomList) {
             if (room.getId().equals(roomID)) {
-                System.out.println("Room : ");
+
+                System.out.println("Room: " + room);
                 return room;
             }
         }
@@ -88,6 +89,26 @@ public class RoomService {
         } else {
             System.out.println("Room list is empty.");
         }
+    }
+
+
+    public void deleteRoom(Long deleteRoomId) {
+
+
+        Room foundRoom = findRoomById(deleteRoomId);
+        if (foundRoom != null) {
+            System.out.println(foundRoom);
+            System.out.println("Are you sure to delete ? Y/N");
+            String select = scanner.nextLine();
+            if (select.equalsIgnoreCase("y")) {
+                roomRepository.delete(foundRoom);
+                System.out.println("Room deleted successfully");
+            } else {
+                System.out.println("Deletion aborted");
+            }
+        }
+
+
     }
 
 

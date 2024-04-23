@@ -1,5 +1,7 @@
 package com.tpe.domain;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class Hotel {
     //A otelinin odaları: 11,12,13
     //A otelinin oda listesinden 11 i çıkarırsam:room tabledan 11 i siler
 
-    @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE) //relation between hotel and rooom
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER) //relation between hotel and rooom
     private List<Room> rooms = new ArrayList<>();
     //cascade:
     //A otelinin odaları: 11,12,13

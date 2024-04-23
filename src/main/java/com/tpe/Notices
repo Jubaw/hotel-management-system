@@ -1,0 +1,4 @@
+Controller: Handles incoming requests
+Repository: Data Access Logics
+Service: Logic Business that encapsulates data and acts as intermediary betwween service and repository
+Domain: Entity layer

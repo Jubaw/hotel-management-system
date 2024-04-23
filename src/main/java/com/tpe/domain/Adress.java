@@ -12,12 +12,7 @@ public class Adress {
     private String country;
     private String zipcode;
 
-    public Adress(String street, String city, String country, String zipcode) {
-        this.street = street;
-        this.city = city;
-        this.country = country;
-        this.zipcode = zipcode;
-    }
+
 
     public String getStreet() {
         return street;

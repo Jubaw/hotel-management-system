@@ -85,8 +85,24 @@ public class HotelRepository {
     }
 
 
-    //8-c: update t_hotel set name=  //Todo:
+    //8-c: update t_hotel set name=
     public void updateHotel(Hotel existingHotel) {
+
+        try {
+
+
+            session = HibernateUtils.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+
+            session.update(existingHotel);
+            transaction.commit();
+            //insert
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+
+        }finally {
+            HibernateUtils.closeSession(session);
+        }
 
     }
 }

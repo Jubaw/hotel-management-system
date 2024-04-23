@@ -64,14 +64,20 @@ public class HotelService {
     //3-e list all hotels
     public void getAllHotels(){
        List<Hotel> allHotels =  hotelRepository.findAll();
-       if (!allHotels.isEmpty()){
-           System.out.println("----------------------------ALL HOTELS----------------------------");
-           for (Hotel hotel : allHotels){
-               System.out.println(hotel);
+       try {
+
+
+           if (!allHotels.isEmpty()) {
+               System.out.println("----------------------------ALL HOTELS----------------------------");
+               for (Hotel hotel : allHotels) {
+                   System.out.println(hotel);
+               }
+               System.out.println("------------------------------------------------------------------");
+           } else {
+               System.out.println("Hotel list is empty.");
            }
-           System.out.println("------------------------------------------------------------------");
-       }else{
-           System.out.println("Hotel list is empty.");
+       }catch (HotelNotFoundException e){
+           System.out.println(e.getMessage());
        }
     }
 

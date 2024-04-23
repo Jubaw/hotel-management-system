@@ -2,17 +2,18 @@ package com.tpe.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
 @Entity
 public class Reservation {
     //todo:auto generated
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private LocalDate checkInDate;
     @Column(nullable = false)
-
     private LocalDate checkOutDate;
-    @ManyToOne //Relates with FK
+    @ManyToOne(fetch = FetchType.LAZY) //Relates with FK
     @JoinColumn(nullable = false)
     private Guest guest;
 
@@ -25,6 +26,7 @@ public class Reservation {
         return id;
     }
 
+    //todo: to be deleted
     public void setId(Long id) {
         this.id = id;
     }
@@ -67,7 +69,6 @@ public class Reservation {
                 "id=" + id +
                 ", checkInDate=" + checkInDate +
                 ", checkOutDate=" + checkOutDate +
-                ", room=" + room +
                 '}';
     }
 }

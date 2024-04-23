@@ -9,7 +9,8 @@ import java.util.List;
 @Entity
 @Table(name = "t_guest")
 public class Guest {
-    @Id
+    @Id //Pk
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -19,7 +20,7 @@ public class Guest {
     private LocalDateTime createDate;
     //todo:
 
-    @OneToMany (mappedBy = "guest",orphanRemoval = true)//3th table is created for it
+    @OneToMany (mappedBy = "guest",orphanRemoval = true)//3rd table is created for it
     private List<Reservation> reservations = new ArrayList<>();
 
     @Embedded
@@ -34,6 +35,7 @@ public class Guest {
         return id;
     }
 
+    //todo: to be deleted
     public void setId(Long id) {
         this.id = id;
     }

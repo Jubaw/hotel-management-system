@@ -17,11 +17,11 @@ public class Room {
 
 
     //todo: many-to-one
-    @ManyToOne() //Relation between room and hotel, adds FK(hotel_id) to room table
+    @ManyToOne //Relation between room and hotel, adds FK(hotel_id) to room table
     @JoinColumn(name = "hotel_id", nullable = false) //optional
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room",orphanRemoval = true)
+    @OneToMany(mappedBy = "room",orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Reservation> reservationList = new ArrayList<>();
 
     public Room() {

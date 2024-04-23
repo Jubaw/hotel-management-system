@@ -1,38 +1,45 @@
 package com.tpe.controller;
 
 import com.tpe.config.HibernateUtils;
+import com.tpe.repository.GuestRepository;
 import com.tpe.repository.HotelRepository;
+import com.tpe.repository.ReservationRepository;
 import com.tpe.repository.RoomRepository;
+import com.tpe.service.GuestService;
 import com.tpe.service.HotelService;
+import com.tpe.service.ReservationService;
 import com.tpe.service.RoomService;
 
 import java.util.Scanner;
 
 public class HotelManagementSystem {
-
     private static Scanner scanner = new Scanner(System.in);
 
-    //Ana Menü
+    //ana menü
     public static void displayHotelManagementSystemMenu() {
-
-
-        //1 HotelRepo to be used in all application.
+        //sadece 1 tane hotelrepo oluşturduk, tüm uygulamada kullanabiliriz.
         HotelRepository hotelRepository = new HotelRepository();
         HotelService hotelService = new HotelService(hotelRepository);
-        RoomRepository roomRepository = new RoomRepository();
-        RoomService roomService=new RoomService(hotelService,roomRepository);
 
+        RoomRepository roomRepository = new RoomRepository();
+        RoomService roomService = new RoomService(hotelService, roomRepository);
+
+        GuestRepository guestRepository = new GuestRepository();
+        GuestService guestService = new GuestService(guestRepository);
+
+        ReservationRepository reservationRepository = new ReservationRepository();
+        ReservationService reservationService = new ReservationService(reservationRepository, guestService, roomService);
 
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("======= Hotel Management ======");
+            System.out.println("========= Hotel Management System =========");
             System.out.println("1.Hotel Operations");
             System.out.println("2.Room Operations");
             System.out.println("3.Guest Operations");
             System.out.println("4.Reservation Operations");
             System.out.println("0. Exit");
-            System.out.println("Enter your choice");
+            System.out.println("Enter your choice : ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -45,10 +52,10 @@ public class HotelManagementSystem {
                     displayRoomOperationsMenu(roomService);
                     break;
                 case 3:
-                    displayGuestOperationsMenu();
+                    displayGuestOperationsMenu(guestService);
                     break;
                 case 4:
-                    displayReservationOperationsMenu();
+                    displayReservationOperationsMenu(reservationService);
                     break;
                 case 0:
                     exit = true;
@@ -56,17 +63,19 @@ public class HotelManagementSystem {
                     HibernateUtils.shutDown();
                     break;
                 default:
-                    System.out.println("Invalid entry, try again");
+                    System.out.println("Invalid choice, please try again ");
                     break;
-
             }
+
+
         }
+
     }
 
     //hotel operations
     private static void displayHotelOperationsMenu(HotelService hotelService) {
-        //HotelService hotelService = new HotelService(); uygulama içerisinde açmak yerine, param const ile çağırarak
-        //her çağrılışında oluşacak kaynak israfını önleriz.
+
+        //HotelService hotelService=new HotelService();
 
         System.out.println("Hotel Operation Menu");
 
@@ -86,35 +95,33 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-                    //todo:1A Save Hotel
+                    //1-a: save hotel
                     hotelService.saveHotel();
                     break;
                 case 2:
-                    //2-a: Finding hotel
-                    System.out.println("Enter hotel ID");
+                    //2-a: hotel bulma
+                    System.out.println("Enter hotel ID : ");
                     Long id = scanner.nextLong();
                     scanner.nextLine();
-                    // hotelService.findHotelById(scanner.nextLong()); can be done too..
+                    hotelService.findHotelById(id);
                     break;
                 case 3:
-                    //7-a: Delete hotel
-                    System.out.println("Enter hotel ID");
-                    Long hotelID = scanner.nextLong();
+                    //7-a: hotel silme
+                    System.out.println("Enter hotel ID : ");
+                    Long hotelid = scanner.nextLong();
                     scanner.nextLine();
-
-                    hotelService.deleteHotel(hotelID);
+                    hotelService.deleteHotel(hotelid);
                     break;
                 case 4:
-                    //3a- List all hotels
+                    //3-a: tüm otelleri listeleme
                     hotelService.getAllHotels();
                     break;
                 case 5:
-                    //8-a: update hotel
-                    System.out.println("Enter hotel ID");
+                    //8-a: hotel güncelleme
+                    System.out.println("Enter hotel ID : ");
                     Long updatedHotelId = scanner.nextLong();
                     scanner.nextLine();
                     hotelService.updateHotelById(updatedHotelId);
-
                     break;
                 case 0:
                     exit = true;
@@ -130,6 +137,8 @@ public class HotelManagementSystem {
 
     //room operations
     private static void displayRoomOperationsMenu(RoomService roomService) {
+
+        //new RoomService();
 
         System.out.println("Room Operation Menu");
         boolean exit = false;
@@ -147,25 +156,26 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-                    //4-a : adding room
+                    //4-a : oda ekleme
                     roomService.saveRoom();
-
                     break;
                 case 2:
-                    //5-a:
-                    System.out.println("Enter room ID");
-                    Long roomID = scanner.nextLong();
-                    roomService.findRoomById(roomID);
-
+                    //5-a
+                    System.out.println("Enter room ID : ");
+                    Long roomId = scanner.nextLong();
+                    scanner.nextLine();
+                    roomService.findRoomById(roomId);
                     break;
                 case 3:
-                    //hw: delete
-
+                    //ödev1:delete
+                    System.out.print("Enter the room ID to delete: ");
+                    Long roomIdToDelete = scanner.nextLong();
+                    scanner.nextLine();
+                    roomService.deleteRoom(roomIdToDelete);
                     break;
                 case 4:
                     //6-a
                     roomService.getAllRooms();
-
                     break;
                 case 0:
                     exit = true;
@@ -180,7 +190,7 @@ public class HotelManagementSystem {
     }
 
     //guest operations
-    private static void displayGuestOperationsMenu() {
+    private static void displayGuestOperationsMenu(GuestService guestService) {
         System.out.println("Guest Operation Menu");
 
         boolean exit = false;
@@ -198,32 +208,40 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-
+                    //9-a:save guest
+                    guestService.saveGuest();
                     break;
                 case 2:
-                    //hw: find
-
+                    //ödev2:find
+                    System.out.print("Enter the Guest ID :");
+                    Long guestId = scanner.nextLong();
+                    scanner.nextLine();
+                    guestService.findGuestById(guestId);
                     break;
                 case 3:
-
+                    //10-a:guest silme
+                    System.out.print("Enter the Guest ID :");
+                    Long id = scanner.nextLong();
+                    scanner.nextLine();
+                    guestService.deleteGuestById(id);
                     break;
                 case 4:
-                    //hw: findall
-
+                    //ödev3:allguest
+                    guestService.findAllGuest();
                     break;
                 case 0:
                     exit = true;
                     System.out.println("Returning to Main Menu...");
                     break;
                 default:
-
+                    System.out.println("Not a valid input");
                     break;
             }
         }
     }
 
     //reservation operations
-    private static void displayReservationOperationsMenu() {
+    private static void displayReservationOperationsMenu(ReservationService reservationService) {
         System.out.println("Reservation Operation Menu");
 
         boolean exit = false;
@@ -241,24 +259,30 @@ public class HotelManagementSystem {
 
             switch (choice) {
                 case 1:
-
+                    //11-a
+                    reservationService.createReservation();
                     break;
                 case 2:
-                    //Hw: find
-
+                    //ödev4:find
+                    System.out.print("Enter the reservation ID: ");
+                    Long reservationId = scanner.nextLong();
+                    scanner.nextLine();
+                    reservationService.findReservationById(reservationId);
                     break;
                 case 3:
-                    //hw:
-
+                    //ödev5:all
+                    reservationService.findAllReservations();
                     break;
                 case 4:
-                    //Hw:findall
-
+                    //12-a reservation cancel
+                    System.out.print("Enter the reservation ID: ");
+                    Long id = scanner.nextLong();
+                    scanner.nextLine();
+                    reservationService.deleteReservationById(id);
                     break;
                 case 0:
                     exit = true;
                     System.out.println("Returning to Main Menu...");
-
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

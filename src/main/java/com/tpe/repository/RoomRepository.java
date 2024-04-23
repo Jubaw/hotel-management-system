@@ -23,7 +23,7 @@ public class RoomRepository {
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             HibernateUtils.closeSession(session);
 
         }
@@ -33,11 +33,11 @@ public class RoomRepository {
     public Room findById(Long roomId) {
         try {
             session = HibernateUtils.getSessionFactory().openSession();
-            Room room=session.get(Room.class, roomId);
+            Room room = session.get(Room.class, roomId);
             return room;
         } catch (HibernateException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             HibernateUtils.closeSession(session);
         }
         return null;
@@ -53,7 +53,25 @@ public class RoomRepository {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }finally {
+        } finally {
+            HibernateUtils.closeSession(session);
+        }
+    }
+
+    public void delete(Room room) {
+        try {
+
+
+            session = HibernateUtils.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+            //delete from t_hotel where id =
+            session.delete(room);
+            transaction.commit();
+            //insert
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
+        } finally {
             HibernateUtils.closeSession(session);
         }
     }
