@@ -1,6 +1,5 @@
 package com.tpe.domain;
 
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.ArrayList;
